@@ -1,0 +1,27 @@
+<div class="formulaire_spip formulaire_maj_references formulaire_#FORM">
+	[(#ENV{forcer}|oui)
+    <p class="notice">Forcer demandé</p>]
+	[(#ENV{sync}|oui)
+    <p class="notice">
+      Synchro en cours
+      [<br />\((#ENV{avancement})\)]
+		</p>]
+  [<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+  <form method="post" action="#ENV{action}">
+    <div>
+      #ACTION_FORMULAIRE
+      <p class="boutons">
+        <span class="image_loading">&nbsp;</span>
+        <input type="submit" class="submit"  value="<:bouton_enregistrer|attribut_html:/>" />
+      </p>
+    </div>
+	</form>
+  [(#ENV{sync}|oui)
+    <script type="text/javascript">
+      jQuery(document).ready(function () {
+        jQuery('.formulaire_#FORM form').delay(3000).submit();
+      });
+    </script>
+  ]
+</div>

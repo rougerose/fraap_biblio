@@ -4,7 +4,9 @@
 # vscode
 .vscode/*
 
+# fabrique Spip
 *.diff
+fabrique_*.php
 
 #
 theme/src/css/*

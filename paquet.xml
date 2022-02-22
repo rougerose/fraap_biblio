@@ -1,0 +1,61 @@
+<paquet
+	prefix="fraap_biblio"
+	version="1.0.0"
+	etat="dev"
+	compatibilite="[4.0.4;4.0.*]"
+	logo="prive/themes/spip/images/fraap_biblio-xx.svg"
+	documentation=""
+	schema="1.0.0"
+>
+	<!--
+		Paquet généré le 2022-02-12 15:59:26
+		(Vous pouvez bien entendu supprimer ces commentaires)
+	-->
+
+	<nom>Fraap : bibliographie</nom>
+	<!-- Bibliographie avec Zotero -->
+
+	<!-- cette balise peut être présente plusieurs fois s'il y a plusieurs auteurs -->
+	<auteur lien='http://rouge-rose.net'>Christophe Le Drean</auteur>
+	<!-- cette balise peut être présente pour indiquer d’autres crédits -->
+	<!-- <credit lien="https://example.com/icon">Logo by @example</credit> -->
+
+	<licence>GNU/GPL</licence>
+
+	<!--
+		Exemple de commandes
+		* dependances
+		<necessite nom="saisies" compatibilite="[3.23.2;]" />
+		<utilise nom="saisies" compatibilite="[3.23.2;]" />
+		<lib nom="simplehtmldom" lien="http://chemin_vers_archive.zip" />
+		* pipelines
+		<pipeline nom="autoriser" inclure="fraap_biblio_autorisations.php" />
+		<pipeline nom="insert_head" inclure="fraap_biblio_pipelines.php" />
+		* declarer un pipeline
+		<pipeline nom="mon_pipeline" action="" />
+		* parents de menus de SPIP :
+				menu_accueil (à éviter), menu_edition, menu_publication,
+				menu_activite, menu_squelette, menu_administration, menu_configuration
+		<menu nom="fraap_biblio" titre="fraap_biblio:fraap_biblio_titre" parent="menu_edition"  icone="images/fraap_biblio-16.png" />
+		* parents d'onglets... configuration, plugins, statistiques, ...
+		<onglet nom="fraap_biblio" titre="fraap_biblio:fraap_biblio_titre" parent="configuration" icone="images/fraap_biblio-24.png" />
+	-->
+
+	<necessite nom="saisies" compatibilite="[3.50.1;]" />
+
+
+	<pipeline nom="autoriser" inclure="fraap_biblio_autorisations.php" />
+
+	<pipeline nom="declarer_tables_objets_sql" inclure="base/fraap_biblio.php" />
+	<pipeline nom="declarer_tables_interfaces" inclure="base/fraap_biblio.php" />
+	<pipeline nom="declarer_tables_auxiliaires" inclure="base/fraap_biblio.php" />
+	<pipeline nom="affiche_enfants" inclure="fraap_biblio_pipelines.php" />
+	<pipeline nom="affiche_milieu" inclure="fraap_biblio_pipelines.php" />
+	<pipeline nom="boite_infos" inclure="fraap_biblio_pipelines.php" />
+	<pipeline nom="objet_compte_enfants" inclure="fraap_biblio_pipelines.php" />
+	<pipeline nom="optimiser_base_disparus" inclure="fraap_biblio_pipelines.php" />
+	<pipeline nom="trig_propager_les_secteurs" inclure="fraap_biblio_pipelines.php" />
+  <necessite nom="saisies" />
+	<menu nom="fbiblios" titre="fbiblio:titre_fbiblios" parent="menu_edition" icone="images/fbiblio-16.png" action="fbiblios" />
+  <menu nom="config_fbiblios" titre="fraap_biblio:fraap_biblio_titre" parent="bando_configuration" icone="images/fbiblio-16.png" action="configurer_fraap_biblio" />
+</paquet>

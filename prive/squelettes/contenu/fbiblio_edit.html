@@ -1,0 +1,34 @@
+[(#ID_FBIBLIO|oui)
+	[(#AUTORISER{modifier,fbiblio,#ID_FBIBLIO}|sinon_interdire_acces)]
+	[(#SET{id_parent,#INFO_ID_RUBRIQUE{fbiblio,#ID_FBIBLIO}})]
+]
+[(#ID_FBIBLIO|non)
+	#SET{id_parent,#ENV{id_rubrique,#ENV{id_parent}}|trouver_rubrique_creer_objet{fbiblios}}
+	[(#GET{id_parent}|non|ou{[(#AUTORISER{creerfbibliodans, rubrique, #GET{id_parent}})]}|sinon_interdire_acces)]
+]
+
+#SET{redirect,#ENV{redirect}|sinon{#ID_FBIBLIO|?{#ID_FBIBLIO|generer_url_entite{fbiblio},#GET{id_parent}|?{#GET{id_parent}|generer_url_entite{rubrique},#URL_ECRIRE{rubriques}}}}}
+
+
+<div class="cadre-formulaire-editer">
+<div class="entete-formulaire">
+	[(#ID_FBIBLIO|oui)
+	[(#GET{redirect}|icone_verticale{<:icone_retour:/>,fbiblio,'',left retour[(#ENV{retourajax,''}|oui)ajax preload]})]
+	]
+	[
+		[(#ID_FBIBLIO|?{<:fbiblio:icone_modifier_fbiblio:/>,<:fbiblio:icone_creer_fbiblio:/>})]
+		<h1>(#ENV*{titre,#INFO_TITRE{fbiblio,#ID_FBIBLIO}|sinon{<:info_sans_titre:/>}})</h1>
+	]
+</div>
+
+#SET{redirect,#ENV{redirect,#ID_FBIBLIO|generer_url_entite{fbiblio}}}
+[(#ENV{retourajax,''}|oui)
+	#SET{redirect,'javascript:if (window.jQuery) jQuery(".entete-formulaire .retour a").followLink();'}
+	<div class="ajax">
+]
+		[(#FORMULAIRE_EDITER_FBIBLIO{#ENV{id_fbiblio,oui}, #GET{id_parent}, #GET{redirect}, #ENV{associer_objet}})]
+[(#ENV{retourajax,''}|oui)
+	</div>
+	<script type="text/javascript">/*<!\[CDATA\[*/reloadExecPage('#ENV{exec}');/*\]\]>*/</script>
+]
+</div>
