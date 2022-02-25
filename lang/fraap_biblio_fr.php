@@ -18,7 +18,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = [
 	'cfg_label_rubrique_mediatheque' => 'Rubrique destinataire',
 	'cfg_explication_rubrique_mediatheque' => 'Désigner la rubrique qui affichera les références bibliographiques ?',
 	'cfg_label_groupe_mediatheque' => 'Groupe principal des mots-clés',
-	'cfg_message_erreur_noconfig' => 'La configuration du plugin est incorrecte',
+	'cfg_message_erreur_noconfig' => 'Synchronisation impossible : la configuration du plugin est incorrecte.',
 
 	// T
 	'titre_page_configurer_fraap_biblio' => 'Configuration de Fraap Biblio',

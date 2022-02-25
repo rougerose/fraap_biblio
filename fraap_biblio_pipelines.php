@@ -38,23 +38,23 @@ function fraap_biblio_affiche_enfants($flux) {
 		if ($e['type'] === 'rubrique') {
 
 			$flux['data'] .= recuperer_fond(
-				'prive/objets/liste/fbiblios',
+				'prive/squelettes/inclure/fbiblios_rubrique',
 				array(
 					'titre' => _T('fbiblio:titre_fbiblios_rubrique'),
-					'id_rubrique' => $id_objet
+					'id_objet' => $id_objet,
 				)
 			);
 
-			if (autoriser('creerfbibliodans', 'rubrique', $id_objet)) {
-				include_spip('inc/presentation');
-				$flux['data'] .= icone_verticale(
-					_T('fbiblio:icone_creer_fbiblio'),
-					generer_url_ecrire('fbiblio_edit', "id_rubrique=$id_objet"),
-					'fbiblio-24.png',
-					'new',
-					'right'
-				) . "<br class='nettoyeur' />";
-			}
+			// if (autoriser('creerfbibliodans', 'rubrique', $id_objet)) {
+			// 	include_spip('inc/presentation');
+			// 	$flux['data'] .= icone_verticale(
+			// 		_T('fbiblio:icone_creer_fbiblio'),
+			// 		generer_url_ecrire('fbiblio_edit', "id_rubrique=$id_objet"),
+			// 		'fbiblio-24.png',
+			// 		'new',
+			// 		'right'
+			// 	) . "<br class='nettoyeur' />";
+			// }
 
 		}
 	}

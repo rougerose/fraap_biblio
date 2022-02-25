@@ -1,17 +1,18 @@
 <BOUCLE_fbiblio(FBIBLIOS){id_fbiblio}{statut?}>
-[<div class="champ contenu_id_zitem[ (#ID_ZITEM*|strlen|?{'',vide})]">
-	<div class="label"><:fbiblio:champ_id_zitem_label:/> : </div>
-	<span dir="#LANG_DIR" class="#EDIT{id_zitem} id_zitem">(#ID_ZITEM)</span>
-</div>]
+  <h3>Rappel :</h3>
+  <p><:fbiblio:message_info_fbiblio_edit:></p>
+  [<div class="champ contenu_id_zitem[ (#ID_ZITEM*|strlen|?{'',vide})]">
+    <div class="label"><:fbiblio:champ_id_zitem_label:/> : </div>
+    <span dir="#LANG_DIR" class="#EDIT{id_zitem} id_zitem">(#ID_ZITEM)</span>
+  </div>]
 
-[<div class="champ contenu_titre[ (#TITRE*|strlen|?{'',vide})]">
-	<div class="label"><:fbiblio:champ_titre_label:/> : </div>
-	<span dir="#LANG_DIR" class="#EDIT{titre} titre">(#TITRE)</span>
-</div>]
+  [<div class="champ contenu_titre[ (#TITRE*|strlen|?{'',vide})]">
+    <div class="label"><:fbiblio:champ_titre_label:/> : </div>
+    <span dir="#LANG_DIR" class="#EDIT{titre} titre">(#TITRE)</span>
+  </div>]
 
-[<div class="champ contenu_auteurs[ (#AUTEURS*|strlen|?{'',vide})]">
-	<div class="label"><:fbiblio:champ_auteurs_label:/> : </div>
-	<span dir="#LANG_DIR" class="#EDIT{auteurs} auteurs">(#AUTEURS)</span>
-</div>]
-
+  [<div class="champ contenu_auteurs[ (#AUTEURS*|strlen|?{'',vide})]">
+    <div class="label"><:fbiblio:champ_auteurs_label:/> : </div>
+    <span dir="#LANG_DIR" class="#EDIT{auteurs} auteurs">(#AUTEURS)</span>
+  </div>]
 </BOUCLE_fbiblio>
