@@ -64,6 +64,7 @@ function fraap_biblio_nettoyer_fbiblios() {
 	foreach ($diff as $id_zitem) {
 		$cle = array_search($id_zitem, array_column($fbiblios, 'id_zitem'));
 		$id_objet = $fbiblios[$cle]['id_fbiblio'];
+		fraap_biblio_dissocier_mots($id_objet);
 		objet_modifier('fbiblio', $id_objet, ['statut' => 'poubelle']);
 	}
 	autoriser_exception('modifier', 'fbiblio', '*', false);
@@ -227,16 +228,7 @@ function fraap_biblio_ajouter_fbiblios($zitem = [], $config = []) {
 		objet_modifier('fbiblio', $fbiblio['id_fbiblio'], $set);
 		autoriser_exception('modifier', 'fbiblio', $fbiblio['id_fbiblio'], false);
 
-		// dissocier les mots-clés actuels
-		$fbiblio_mots = sql_allfetsel('id_mot', 'spip_mots_liens', 'objet=' . sql_quote('fbiblio') . ' AND id_objet=' . $fbiblio['id_fbiblio']);
-
-		if (count($fbiblio_mots) > 0) {
-			$ids = [];
-			foreach ($fbiblio_mots as $mot) {
-				$ids[] = $mot['id_mot'];
-			}
-			objet_dissocier(['mot' => $ids], ['fbiblio' => $fbiblio['id_fbiblio']]);
-		}
+		fraap_biblio_dissocier_mots($fbiblio['id_fbiblio']);
 	}
 
 	$ztags = sql_allfetsel('tag', 'spip_ztags', 'id_zitem=' . sql_quote($zitem['id_zitem']));
@@ -300,7 +292,7 @@ function fraap_biblio_ajouter_mots($id_fbiblio = 0, $ztags = [], $repertoire_mot
 
 				if ($column) {
 					$cle = array_search($titre, array_column($column, 'titre'));
-					if ($cle) {
+					if ($cle >= 0) {
 						$associer = objet_associer(['mot' => $column[$cle]['id_mot']], ['fbiblio' => $id_fbiblio]);
 						$res[$type_associer] += $associer;
 					}
@@ -319,6 +311,19 @@ function fraap_biblio_ajouter_mots($id_fbiblio = 0, $ztags = [], $repertoire_mot
 		return true;
 	} else {
 		return false;
+	}
+}
+
+function fraap_biblio_dissocier_mots($id_fbiblio) {
+	// dissocier les mots-clés actuels
+	$fbiblio_mots = sql_allfetsel('id_mot', 'spip_mots_liens', 'objet=' . sql_quote('fbiblio') . ' AND id_objet=' . $id_fbiblio);
+
+	if (count($fbiblio_mots) > 0) {
+		$ids = [];
+		foreach ($fbiblio_mots as $mot) {
+			$ids[] = $mot['id_mot'];
+		}
+		objet_dissocier(['mot' => $ids], ['fbiblio' => $id_fbiblio]);
 	}
 }
 
