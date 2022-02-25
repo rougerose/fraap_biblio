@@ -21,5 +21,5 @@ $GLOBALS[$GLOBALS['idx_lang']] = [
 	'cfg_message_erreur_noconfig' => 'Synchronisation impossible : la configuration du plugin est incorrecte.',
 
 	// T
-	'titre_page_configurer_fraap_biblio' => 'Configuration de Fraap Biblio',
+	'titre_page_configurer_fraap_biblio' => 'Configuration de Fraap bibliographie',
 ];
