@@ -6,19 +6,25 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 
 function formulaires_maj_references_charger_dist() {
 	include_spip('inc/config');
-	$config_maj = lire_config('fraap_biblio_synchro');
-	$config_fbiblios = lire_config('fraap_biblio_synchro_fbiblios');
-	$maj = isset($config_maj) ? $config_maj : ['forcer' => false];
+	$config_synchro = lire_config('fraap_biblio_synchro');
+	$forcer = isset($config_synchro) ? $config_synchro['forcer'] : false;
 	$avancement = '';
 
-	$nb = isset($config_fbiblios['encours']) ? $config_fbiblios['encours'] : 0;
+	if (isset($config_synchro['fbiblios']['action'])) {
+		if ($config_synchro['fbiblios']['action'] == 'syncho') {
+			$nb = isset($config_synchro['fbiblios']['solde']) ? $config_synchro['fbiblios']['solde'] : 0;
+			$avancement = _T('fbiblio:synchro_message_maj_en_cours', ['nb' => $nb]);
+		}
 
-	$avancement = _T('fbiblio:message_maj_en_cours', ['nb' => $nb]);
+		if ($config_synchro['fbiblios']['action'] == 'nettoyer') {
+			$avancement = _T('fbiblio:synchro_message_nettoyage_en_cours');
+		}
+	}
 
 	$contexte = [
-		'forcer' => $maj['forcer'] ? 'on' : '',
-		'sync' => $nb ? 'on' : '',
-		'avancement' => $avancement
+		'forcer' => $forcer ? 'on' : '',
+		'sync' => isset($config_synchro['fbiblios']['action']) ? 'on' : '',
+		'avancement' => $avancement,
 	];
 
 	return $contexte;

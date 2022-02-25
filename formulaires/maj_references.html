@@ -13,7 +13,11 @@
       #ACTION_FORMULAIRE
       <p class="boutons">
         <span class="image_loading">&nbsp;</span>
-        <input type="submit" class="submit"  value="<:bouton_enregistrer|attribut_html:/>" />
+        <input type="submit" class="submit" value="<:fbiblio:bouton_synchroniser|attribut_html:/>" />
+        [(#ENV{forcer}|non)
+          <span style="display: block; margin: 0.5rem 0;"></span>
+          <input type="submit" class="submit" value="<:fbiblio:bouton_synchroniser_forcer|attribut_html:/>" name="sync_complete" />
+        ]
       </p>
     </div>
 	</form>
