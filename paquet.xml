@@ -42,6 +42,7 @@
 	-->
 
 	<necessite nom="saisies" compatibilite="[3.50.1;]" />
+	<necessite nom="zotspip" compatibilite="[3.8.7;]" />
 
 	<pipeline nom="autoriser" inclure="fraap_biblio_autorisations.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/fraap_biblio.php" />
