@@ -171,7 +171,7 @@ function fraap_biblio_synchroniser_fbiblios($forcer = false, $config = []) {
 				$date_dernier_zitem = strtotime($date_dernier_zitem);
 				if ($date_dernier_zitem > $config['derniere_synchro']) {
 					$date_derniere_synchro = date('c', $config['derniere_synchro']);
-					$total_zitems = intval(sql_countsel('spip_zitems', 'id_parent="0" AND updated > ' . sql_quote($date_dernier_zitem)));
+					$total_zitems = intval(sql_countsel('spip_zitems', 'id_parent="0" AND updated > ' . sql_quote($date_derniere_synchro)));
 					$config['fbiblios']['solde'] = $total_zitems;
 					$config['fbiblios']['total'] = $total_zitems;
 				}
@@ -190,7 +190,14 @@ function fraap_biblio_synchroniser_fbiblios($forcer = false, $config = []) {
 		$config['fbiblios']['etape'] += 1;
 
 		$limit = sql_quote($config['fbiblios']['debut']) . ',' . sql_quote($config['fbiblios']['offset']);
-		$zitems = sql_allfetsel('id_zitem, titre, auteurs', 'spip_zitems', 'id_parent="0"', '', 'updated DESC', $limit);
+
+		// Si $date_derniere_synchro, alors la temporalité est à prendre en compte
+		if (isset($date_derniere_synchro)) {
+			$zitems = sql_allfetsel('id_zitem, titre, auteurs', 'spip_zitems', 'id_parent="0" AND updated > ' . sql_quote($date_derniere_synchro), '', 'updated DESC', $limit);
+		} else {
+			$zitems = sql_allfetsel('id_zitem, titre, auteurs', 'spip_zitems', 'id_parent="0"', '', 'updated DESC', $limit);
+		}
+
 
 		foreach ($zitems as $zitem) {
 			fraap_biblio_ajouter_fbiblios($zitem, $config);
