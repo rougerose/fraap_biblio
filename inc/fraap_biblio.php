@@ -232,7 +232,7 @@ function fraap_biblio_ajouter_fbiblios($zitem = [], $config = []) {
 	} else {
 		// mettre à jour la référence
 		autoriser_exception('modifier', 'fbiblio', $fbiblio['id_fbiblio']);
-		objet_modifier('fbiblio', $fbiblio['id_fbiblio'], $set);
+		objet_modifier('fbiblio', $fbiblio['id_fbiblio'], $fbiblio_set);
 		autoriser_exception('modifier', 'fbiblio', $fbiblio['id_fbiblio'], false);
 
 		fraap_biblio_dissocier_mots($fbiblio['id_fbiblio']);
