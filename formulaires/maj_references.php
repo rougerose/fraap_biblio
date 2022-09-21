@@ -11,7 +11,7 @@ function formulaires_maj_references_charger_dist() {
 	$avancement = '';
 
 	if (isset($config_synchro['fbiblios']['action'])) {
-		if ($config_synchro['fbiblios']['action'] == 'syncho') {
+		if ($config_synchro['fbiblios']['action'] == 'synchro') {
 			$nb = isset($config_synchro['fbiblios']['solde']) ? $config_synchro['fbiblios']['solde'] : 0;
 			$avancement = _T('fbiblio:synchro_message_maj_en_cours', ['nb' => $nb]);
 		}
@@ -32,7 +32,7 @@ function formulaires_maj_references_charger_dist() {
 
 function formulaires_maj_references_traiter_dist() {
 	include_spip('inc/fraap_biblio');
-	$forcer = (_request('sync_complete')) ? true : false;
+	$forcer = (_request('forcer')) ? true : false;
 	$res = fraap_biblio_synchroniser($forcer);
 	if ($res['type'] == 0) {
 		return ['message_erreur' => $res['message']];
