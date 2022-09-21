@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Utilisations de pipelines par Fraap : bibliographie
  *
@@ -35,14 +36,13 @@ function fraap_biblio_affiche_enfants($flux) {
 	) {
 		$id_objet = $flux['args']['id_objet'];
 
-		if ($e['type'] === 'rubrique') {
-
+		if ($e['type'] === 'rubrique' and $e['edition'] === false) {
 			$flux['data'] .= recuperer_fond(
 				'prive/squelettes/inclure/fbiblios_rubrique',
-				array(
+				[
 					'titre' => _T('fbiblio:titre_fbiblios_rubrique'),
 					'id_objet' => $id_objet,
-				)
+				]
 			);
 
 			// if (autoriser('creerfbibliodans', 'rubrique', $id_objet)) {
@@ -55,7 +55,6 @@ function fraap_biblio_affiche_enfants($flux) {
 			// 		'right'
 			// 	) . "<br class='nettoyeur' />";
 			// }
-
 		}
 	}
 	return $flux;
@@ -80,13 +79,13 @@ function fraap_biblio_affiche_milieu($flux) {
 	if (
 		$e
 		and !$e['edition']
-		and in_array($e['type'], array('mot'))
+		and in_array($e['type'], ['mot'])
 	) {
-		$texte .= recuperer_fond('prive/objets/editer/liens', array(
+		$texte .= recuperer_fond('prive/objets/editer/liens', [
 			'table_source' => 'fbiblios',
 			'objet' => $e['type'],
 			'id_objet' => $flux['args'][$e['id_table_objet']]
-		));
+		]);
 	}
 
 	if ($texte) {
@@ -110,7 +109,7 @@ function fraap_biblio_affiche_milieu($flux) {
 function fraap_biblio_boite_infos($flux) {
 	if (isset($flux['args']['type']) and isset($flux['args']['id']) and $id = intval($flux['args']['id'])) {
 		$texte = '';
-		if ($flux['args']['type'] == 'rubrique' and $nb = sql_countsel('spip_fbiblios', array("statut='publie'", 'id_rubrique=' . $id))) {
+		if ($flux['args']['type'] == 'rubrique' and $nb = sql_countsel('spip_fbiblios', ["statut='publie'", 'id_rubrique=' . $id])) {
 			$texte .= '<div>' . singulier_ou_pluriel($nb, 'fbiblio:info_1_fbiblio', 'fbiblio:info_nb_fbiblios') . "</div>\n";
 		}
 		if ($texte and $p = strpos($flux['data'], '<!--nb_elements-->')) {
@@ -155,7 +154,7 @@ function fraap_biblio_objet_compte_enfants($flux) {
 function fraap_biblio_optimiser_base_disparus($flux) {
 
 	include_spip('action/editer_liens');
-	$flux['data'] += objet_optimiser_liens(array('fbiblio'=>'*'), '*');
+	$flux['data'] += objet_optimiser_liens(['fbiblio' => '*'], '*');
 
 	sql_delete('spip_fbiblios', "statut='poubelle' AND maj < " . $flux['args']['date']);
 
@@ -178,7 +177,7 @@ function fraap_biblio_trig_propager_les_secteurs($flux) {
 		'A.id_rubrique = R.id_rubrique AND A.id_secteur <> R.id_secteur'
 	);
 	while ($row = sql_fetch($r)) {
-		sql_update('spip_fbiblios', array('id_secteur' => $row['secteur']), 'id_fbiblio=' . $row['id']);
+		sql_update('spip_fbiblios', ['id_secteur' => $row['secteur']], 'id_fbiblio=' . $row['id']);
 	}
 
 	return $flux;
