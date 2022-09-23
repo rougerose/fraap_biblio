@@ -195,9 +195,9 @@ function fraap_biblio_synchroniser_fbiblios($forcer = false, $config = []) {
 
 		// Si $date_derniere_synchro, alors la temporalité est à prendre en compte
 		if (isset($date_derniere_synchro)) {
-			$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref', 'spip_zitems', 'id_parent="0" AND updated > ' . sql_quote($date_derniere_synchro), '', 'updated DESC', $limit);
+			$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0" AND updated > ' . sql_quote($date_derniere_synchro), '', 'updated DESC', $limit);
 		} else {
-			$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref', 'spip_zitems', 'id_parent="0"', '', 'updated DESC', $limit);
+			$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0"', '', 'updated DESC', $limit);
 		}
 
 
@@ -229,6 +229,7 @@ function fraap_biblio_ajouter_fbiblios($zitem = [], $config = []) {
 		'auteurs' => $zitem['auteurs'],
 		'resume' => $zitem['resume'],
 		'type_ref' => $zitem['type_ref'],
+		'annee' => $zitem['annee'],
 	];
 
 	if (!$fbiblio) {

@@ -55,6 +55,7 @@ function fraap_biblio_declarer_tables_objets_sql($tables) {
 			'auteurs'            => 'text NOT NULL DEFAULT ""',
 			'resume'             => "mediumtext DEFAULT '' NOT NULL",
 			'type_ref'           => "varchar(255) DEFAULT '' NOT NULL",
+			'annee'              => 'smallint(6)',
 			'statut'             => 'varchar(20)  DEFAULT "0" NOT NULL',
 			'maj'                => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
 		],
