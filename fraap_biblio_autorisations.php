@@ -1,4 +1,9 @@
 <?php
+
+if (!defined('_ECRIRE_INC_VERSION')) {
+	return;
+}
+
 /**
  * Définit les autorisations du plugin Fraap : bibliographie
  *
@@ -96,7 +101,7 @@ function autoriser_fbiblio_voir_dist($faire, $type, $id, $qui, $opt) {
  * @return bool          true s'il a le droit, false sinon
 **/
 function autoriser_fbiblio_creer_dist($faire, $type, $id, $qui, $opt) {
-	return (in_array($qui['statut'], array('0minirezo', '1comite')) and sql_countsel('spip_rubriques')>0);
+	return (in_array($qui['statut'], ['0minirezo', '1comite']) and sql_countsel('spip_rubriques') > 0);
 }
 
 /**
@@ -110,7 +115,7 @@ function autoriser_fbiblio_creer_dist($faire, $type, $id, $qui, $opt) {
  * @return bool          true s'il a le droit, false sinon
 **/
 function autoriser_fbiblio_modifier_dist($faire, $type, $id, $qui, $opt) {
-	return in_array($qui['statut'], array('0minirezo', '1comite'));
+	return in_array($qui['statut'], ['0minirezo', '1comite']);
 }
 
 /**
@@ -154,4 +159,15 @@ function autoriser_rubrique_creerfbibliodans_dist($faire, $type, $id, $qui, $opt
 **/
 function autoriser_associerfbiblios_dist($faire, $type, $id, $qui, $opt) {
 	return $qui['statut'] == '0minirezo' and !$qui['restreint'];
+}
+
+
+function autoriser_fraap_biblio_configurer_dist($faire, $type, $id, $qui, $opt) {
+	// type est un objet (la plupart du temps) ou une chose.
+	// autoriser('configurer', '_fraap_biblio') => $type = 'fraap_biblio'
+	// au choix :
+	//return autoriser('webmestre', $type, $id, $qui, $opt); // seulement les webmestres
+	return autoriser('configurer', '', $id, $qui, $opt); // seulement les administrateurs complets
+	//return $qui['statut'] == '0minirezo'; // seulement les administrateurs (même les restreints)
+	// ...
 }
