@@ -69,7 +69,7 @@ function fraap_biblio_declarer_tables_objets_sql($tables) {
 		 #'date' => '',
 		'champs_editables'  => ['id_rubrique', 'id_secteur'],
 		'champs_versionnes' => ['id_rubrique', 'id_secteur'],
-		'rechercher_champs' => [],
+		'rechercher_champs' => ['titre' => 8, 'auteurs' => 8, 'resume' => 8],
 		'tables_jointures'  => [],
 		'statut_textes_instituer' => [
 			'prepa'    => 'texte_statut_en_cours_redaction',
