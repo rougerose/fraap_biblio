@@ -19,7 +19,14 @@ $GLOBALS[$GLOBALS['idx_lang']] = [
 	'cfg_explication_rubrique_mediatheque' => 'Désigner la rubrique qui affichera les références bibliographiques ?',
 	'cfg_label_groupe_mediatheque' => 'Groupe principal des mots-clés',
 	'cfg_message_erreur_noconfig' => 'Synchronisation impossible : la configuration du plugin est incorrecte.',
+	'cfg_option_forcer_label' => 'Options de la synchronisation',
+	'cfg_option_forcer_non' => 'Mettre à jour la Médiathèque',
+	'cfg_option_forcer_oui' => 'Effacer et mettre à jour la Médiathèque',
+
 
 	// T
-	'titre_page_configurer_fraap_biblio' => 'Configuration de Fraap bibliographie',
+	'titre_page_configurer_fraap_biblio' => 'Configuration et synchronisation de la Médiathèque',
+	'titre_section_configurer' => 'Configurer la Médiathèque',
+	'titre_section_synchroniser' => 'Synchroniser la Médiathèque avec Zotéro',
+	'titre_section_effacer_config' => 'Effacer la configuration',
 ];

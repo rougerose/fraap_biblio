@@ -53,7 +53,7 @@ function fraap_biblio_upgrade($nom_meta_base_version, $version_cible) {
 	# ...
 	include_spip('inc/config');
 	$maj['create'] = [
-		['maj_tables', ['spip_fbiblios', 'spip_fbiblios_liens']],
+		['maj_tables', ['spip_fbiblios']],
 		['ecrire_config', 'fraap_biblio', ['nb_max_synchro' => 50, 'mediatheque' => '', 'groupe' => '']]
 	];
 

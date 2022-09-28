@@ -161,7 +161,9 @@ function fraap_biblio_synchroniser_fbiblios($forcer = false, $config = []) {
 
 	if ($forcer) {
 		$total_zitems = intval(sql_countsel('spip_zitems', 'id_parent="0"'));
-		$config['fbiblios']['solde'] = $total_zitems;
+		if ($config['fbiblios']['solde'] == 0) {
+			$config['fbiblios']['solde'] = $total_zitems;
+		}
 		$config['fbiblios']['total'] = $total_zitems;
 	} else {
 		if ($config['fbiblios']['total'] == 0 and $config['fbiblios']['etape'] == 0) {
@@ -171,7 +173,7 @@ function fraap_biblio_synchroniser_fbiblios($forcer = false, $config = []) {
 				$date_dernier_zitem = strtotime($date_dernier_zitem);
 				if ($date_dernier_zitem > $config['derniere_synchro']) {
 					$date_derniere_synchro = date('c', $config['derniere_synchro']);
-					$total_zitems = intval(sql_countsel('spip_zitems', 'id_parent="0" AND updated > ' . sql_quote($date_dernier_zitem)));
+					$total_zitems = intval(sql_countsel('spip_zitems', 'id_parent="0" AND updated > ' . sql_quote($date_derniere_synchro)));
 					$config['fbiblios']['solde'] = $total_zitems;
 					$config['fbiblios']['total'] = $total_zitems;
 				}
@@ -190,7 +192,14 @@ function fraap_biblio_synchroniser_fbiblios($forcer = false, $config = []) {
 		$config['fbiblios']['etape'] += 1;
 
 		$limit = sql_quote($config['fbiblios']['debut']) . ',' . sql_quote($config['fbiblios']['offset']);
-		$zitems = sql_allfetsel('id_zitem, titre, auteurs', 'spip_zitems', 'id_parent="0"', '', 'updated DESC', $limit);
+
+		// Si $date_derniere_synchro, alors la temporalité est à prendre en compte
+		if (isset($date_derniere_synchro)) {
+			$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0" AND updated > ' . sql_quote($date_derniere_synchro), '', 'updated DESC', $limit);
+		} else {
+			$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0"', '', 'updated DESC', $limit);
+		}
+
 
 		foreach ($zitems as $zitem) {
 			fraap_biblio_ajouter_fbiblios($zitem, $config);
@@ -218,6 +227,9 @@ function fraap_biblio_ajouter_fbiblios($zitem = [], $config = []) {
 		'id_zitem' => $zitem['id_zitem'],
 		'titre' => $zitem['titre'],
 		'auteurs' => $zitem['auteurs'],
+		'resume' => $zitem['resume'],
+		'type_ref' => $zitem['type_ref'],
+		'annee' => $zitem['annee'],
 	];
 
 	if (!$fbiblio) {
@@ -225,7 +237,7 @@ function fraap_biblio_ajouter_fbiblios($zitem = [], $config = []) {
 	} else {
 		// mettre à jour la référence
 		autoriser_exception('modifier', 'fbiblio', $fbiblio['id_fbiblio']);
-		objet_modifier('fbiblio', $fbiblio['id_fbiblio'], $set);
+		objet_modifier('fbiblio', $fbiblio['id_fbiblio'], $fbiblio_set);
 		autoriser_exception('modifier', 'fbiblio', $fbiblio['id_fbiblio'], false);
 
 		fraap_biblio_dissocier_mots($fbiblio['id_fbiblio']);
@@ -233,13 +245,19 @@ function fraap_biblio_ajouter_fbiblios($zitem = [], $config = []) {
 
 	$ztags = sql_allfetsel('tag', 'spip_ztags', 'id_zitem=' . sql_quote($zitem['id_zitem']));
 
-	$ajouter_mots = fraap_biblio_ajouter_mots($fbiblio['id_fbiblio'], $ztags, $config['repertoire_mots']);
+	if (count($ztags) > 0) {
+		$ajouter_mots = fraap_biblio_ajouter_mots($fbiblio['id_fbiblio'], $ztags, $config['repertoire_mots']);
+	}
 
 	$statut = null;
 
+	if (!$fbiblio['statut']) {
+		$fbiblio['statut'] = sql_getfetsel('statut', 'spip_fbiblios', 'id_fbiblio=' . $fbiblio['id_fbiblio']);
+	}
+
 	if ($ajouter_mots) {
-		if ($fbiblio['statut'] == 'prepa') {
-			$statut = ['statut' => 'prop'];
+		if ($fbiblio['statut'] == 'prepa' or $fbiblio['statut'] == 'prop') {
+			$statut = ['statut' => 'publie'];
 		}
 	} else {
 		if ($fbiblio['statut'] == 'prop') {
@@ -259,7 +277,7 @@ function fraap_biblio_ajouter_fbiblios($zitem = [], $config = []) {
 
 
 function fraap_biblio_ajouter_mots($id_fbiblio = 0, $ztags = [], $repertoire_mots = []) {
-	$res = ['index' => 0, 'categories' => 0, 'themes' => 0];
+	$res = ['index' => 0, 'mots' => 0];
 
 	if (intval($id_fbiblio) == 0) {
 		return false; // erreur
@@ -267,35 +285,16 @@ function fraap_biblio_ajouter_mots($id_fbiblio = 0, $ztags = [], $repertoire_mot
 
 	if (is_array($ztags) and count($ztags) > 0) {
 		foreach ($ztags as $ztag) {
-			$column = null;
-			$type_associer = '';
 			$ztag_titre = fraap_biblio_normaliser_titre($ztag['tag']);
 
-			preg_match('/(cat|mot)(=)/', $ztag_titre, $matches);
+			if (strpos($ztag_titre, 'mot=') !== false) {
+				list($type, $titre) = explode('=', $ztag_titre);
+				$res['index'] += 1;
 
-			if (count($matches) > 0) {
-				list($type, $titre) =  explode('=', $ztag_titre);
-
-				if ($type == 'cat') {
-					$column = $repertoire_mots['categories'];
-					$type_associer = 'categories';
-					// Ajouter au total
-					$res['index'] += 1;
-				}
-
-				if ($type == 'mot') {
-					$column = $repertoire_mots['themes'];
-					$type_associer = 'themes';
-					// Ajouter au total
-					$res['index'] += 1;
-				}
-
-				if ($column) {
-					$cle = array_search($titre, array_column($column, 'titre'));
-					if ($cle >= 0) {
-						$associer = objet_associer(['mot' => $column[$cle]['id_mot']], ['fbiblio' => $id_fbiblio]);
-						$res[$type_associer] += $associer;
-					}
+				$cle = array_search($titre, array_column($repertoire_mots, 'titre'));
+				if ($cle >= 0) {
+					$associer = objet_associer(['mot' => $repertoire_mots[$cle]['id_mot']], ['fbiblio' => $id_fbiblio]);
+					$res['mots'] += $associer;
 				}
 			}
 		}
@@ -307,7 +306,7 @@ function fraap_biblio_ajouter_mots($id_fbiblio = 0, $ztags = [], $repertoire_mot
 	 * - au moins 1 mot-clé de type catégories a été ajouté
 	 * - le total attendu est égal au nombre de mots ajoutés
 	 */
-	if ($res['index'] > 0 and $res['categories'] > 0 and $res['index'] == $res['categories'] + $res['themes']) {
+	if ($res['index'] > 0 and $res['mots'] > 0 and $res['index'] == $res['mots']) {
 		return true;
 	} else {
 		return false;
@@ -329,26 +328,20 @@ function fraap_biblio_dissocier_mots($id_fbiblio) {
 
 
 function fraap_biblio_constituer_repertoire_mots($id_groupe) {
-	$repertoire = [
-		'categories' => [],
-		'themes' => [],
-	];
+	$repertoire = [];
 
-	$mots = sql_allfetsel('id_mot, titre, id_parent', 'spip_mots', 'id_groupe=' . intval($id_groupe));
+	$mots = sql_allfetsel('id_mot, titre', 'spip_mots', 'id_groupe_racine=' . intval($id_groupe));
 
 	foreach ($mots as $mot) {
 		$donnees = [
 			'id_mot' => $mot['id_mot'],
 			'titre' => fraap_biblio_normaliser_titre($mot['titre'])
 		];
-		if ($mot['id_parent'] == 0) {
-			$repertoire['categories'][] = $donnees;
-		} else {
-			$repertoire['themes'][] = $donnees;
-		}
+
+		$repertoire[] = $donnees;
 	}
 
-	if (count($repertoire['categories']) == 0 or count($repertoire['themes']) == 0) {
+	if (count($repertoire) == 0) {
 		return false;
 	}
 

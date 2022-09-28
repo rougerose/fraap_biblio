@@ -1,28 +1,31 @@
 [(#REM)
   <!-- fbiblios liées à une rubrique -->
 ]
-
-[(#REM)
-  <!-- fbiblios en mode prepa -->
-]<B_fbiblios_prepa>
-  <BOUCLE_fbiblios_prepa(FBIBLIOS){id_rubrique}{statut=prepa}> </BOUCLE_fbiblios_prepa>
-    #SET{total_prepa, #TOTAL_BOUCLE}
-    #SET{titre, #GET{total_prepa}|singulier_ou_pluriel{fbiblio:info_1_fbiblio_prepa,fbiblio:info_nb_fbiblios_prepa}}
-    <INCLURE{fond=prive/objets/liste/fbiblios, id_rubrique, statut=prepa, titre=#GET{titre}, env}/>
-</B_fbiblios_prepa>
-[(#REM)
-  <!-- fbiblios en mode prop -->
-]<B_fbiblios_prop>
-  <BOUCLE_fbiblios_prop(FBIBLIOS){id_rubrique}{statut=prop}> </BOUCLE_fbiblios_prop>
-    #SET{total_prop, #TOTAL_BOUCLE}
-    #SET{titre, #GET{total_prop}|singulier_ou_pluriel{fbiblio:info_1_fbiblio_prop,fbiblio:info_nb_fbiblios_prop}}
-    <INCLURE{fond=prive/objets/liste/fbiblios, id_rubrique, statut=prop, titre=#GET{titre}, env}/>
-</B_fbiblios_prop>
+<br class="nettoyeur">
+<br class="nettoyeur">
+<h2 class="titrem"><:fbiblio:titre_fbiblios_rubrique:></h2>
 [(#REM)
   <!-- fbiblios en mode publie -->
 ]<B_fbiblios_publie>
-  <BOUCLE_fbiblios_publie(FBIBLIOS){id_rubrique}{statut=publie}> </BOUCLE_fbiblios_publie>
+  <BOUCLE_fbiblios_publie(FBIBLIOS){id_rubrique=#ENV{id_objet}}{statut=publie}> </BOUCLE_fbiblios_publie>
     #SET{total_publie, #TOTAL_BOUCLE}
     #SET{titre, #GET{total_publie}|singulier_ou_pluriel{fbiblio:info_1_fbiblio_publie,fbiblio:info_nb_fbiblios_publie}}
     <INCLURE{fond=prive/objets/liste/fbiblios, id_rubrique, statut=publie, titre=#GET{titre}, env}/>
 </B_fbiblios_publie>
+[(#REM)
+  <!-- fbiblios en mode prop -->
+]<B_fbiblios_prop>
+  <BOUCLE_fbiblios_prop(FBIBLIOS){id_rubrique=#ENV{id_objet}}{statut=prop}> </BOUCLE_fbiblios_prop>
+    #SET{total_prop, #TOTAL_BOUCLE}
+    #SET{titre, #GET{total_prop}|singulier_ou_pluriel{fbiblio:info_1_fbiblio_prop,fbiblio:info_nb_fbiblios_prop}}
+    <INCLURE{fond=prive/objets/liste/fbiblios, id_rubrique, statut=prop, titre=#GET{titre}, env}/>
+</B_fbiblios_prop>
+
+[(#REM)
+  <!-- fbiblios en mode prepa -->
+]<B_fbiblios_prepa>
+  <BOUCLE_fbiblios_prepa(FBIBLIOS){id_rubrique=#ENV{id_objet}}{statut=prepa}> </BOUCLE_fbiblios_prepa>
+    #SET{total_prepa, #TOTAL_BOUCLE}
+    #SET{titre, #GET{total_prepa}|singulier_ou_pluriel{fbiblio:info_1_fbiblio_prepa,fbiblio:info_nb_fbiblios_prepa}}
+    <INCLURE{fond=prive/objets/liste/fbiblios, id_rubrique, statut=prepa, titre=#GET{titre}, env}/>
+</B_fbiblios_prepa>

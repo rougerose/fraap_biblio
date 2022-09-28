@@ -1,30 +1,35 @@
 <div class="formulaire_spip formulaire_maj_references formulaire_#FORM">
-	[(#ENV{forcer}|oui)
-    <p class="notice">Forcer demandé</p>]
-	[(#ENV{sync}|oui)
-    <p class="notice">
-      Synchro en cours
-      [<br />\((#ENV{avancement})\)]
-		</p>]
-  [<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
-	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+  [(#ENV{forcer}|oui)
+    <p class="notice">Forcer demandé</p>
+  ][(#ENV{sync}|oui)
+    <p class="notice">Synchro en cours [<br />\((#ENV{avancement})\)]</p>
+  ][
+    <p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>
+  ][
+    <p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>
+  ]
   <form method="post" action="#ENV{action}">
     <div>
       #ACTION_FORMULAIRE
-      <p class="boutons">
-        <span class="image_loading">&nbsp;</span>
-        <input type="submit" class="submit" value="<:fbiblio:bouton_synchroniser|attribut_html:/>" />
-        [(#ENV{forcer}|non)
-          <span style="display: block; margin: 0.5rem 0;"></span>
-          <input type="submit" class="submit" value="<:fbiblio:bouton_synchroniser_forcer|attribut_html:/>" name="sync_complete" />
-        ]
-      </p>
+
+      [(#SAISIE{radio, forcer, label=<:fraap_biblio:cfg_option_forcer_label:>, data=#ARRAY{0,<:fraap_biblio:cfg_option_forcer_non:>,1,<:fraap_biblio:cfg_option_forcer_oui:>}, defaut=0})]
+
+      <div class="groupe_btns">
+        <p class="boutons">
+          <span class="image_loading">&nbsp;</span>
+          <input
+            type="submit"
+            class="submit"
+            value="<:fbiblio:bouton_synchroniser|attribut_html:>"
+          />
+        </p>
+      </div>
     </div>
-	</form>
+  </form>
   [(#ENV{sync}|oui)
     <script type="text/javascript">
       jQuery(document).ready(function () {
-        jQuery('.formulaire_#FORM form').delay(3000).submit();
+        jQuery(".formulaire_#FORM form").delay(3000).submit();
       });
     </script>
   ]
