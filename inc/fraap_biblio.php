@@ -59,6 +59,9 @@ function fraap_biblio_synchroniser_fbiblios($config) {
 				$date_synchro = date('c', $config['derniere_synchro']);
 				$total_zitems = intval(sql_countsel('spip_zitems', 'id_parent="0" AND updated>=' . sql_quote($date_synchro)));
 			}
+			else {
+				$total_zitems = 0;
+			}
 		}
 
 		$config['fbiblios']['total'] = $total_zitems;
@@ -69,29 +72,31 @@ function fraap_biblio_synchroniser_fbiblios($config) {
 		$config['fbiblios']['solde'] = $total_zitems;
 	}
 
-	if ($config['fbiblios']['total'] > 0 and $action == 'install' or $action == 'synchro') {
-		// Calculer le rang et le nombre de références à extraire à chaque étape
-		$config['fbiblios']['debut'] = $config['fbiblios']['offset'] * $config['fbiblios']['etape'];
-		$config['fbiblios']['solde'] = $config['fbiblios']['solde'] - $config['fbiblios']['offset'];
+	if ($action == 'install' or $action == 'synchro') {
+		if ($config['fbiblios']['total'] > 0) {
+			// Calculer le rang et le nombre de références à extraire à chaque étape
+			$config['fbiblios']['debut'] = $config['fbiblios']['offset'] * $config['fbiblios']['etape'];
+			$config['fbiblios']['solde'] = $config['fbiblios']['solde'] - $config['fbiblios']['offset'];
 
-		// Pas de solde négatif
-		if ($config['fbiblios']['solde'] < 0) {
-			$config['fbiblios']['solde'] = 0;
-		}
+			// Pas de solde négatif
+			if ($config['fbiblios']['solde'] < 0) {
+				$config['fbiblios']['solde'] = 0;
+			}
 
-		// Incrémenter l'étape
-		$config['fbiblios']['etape'] += 1;
+			// Incrémenter l'étape
+			$config['fbiblios']['etape'] += 1;
 
-		$limit = sql_quote($config['fbiblios']['debut']) . ',' . sql_quote($config['fbiblios']['offset']);
+			$limit = sql_quote($config['fbiblios']['debut']) . ',' . sql_quote($config['fbiblios']['offset']);
 
-		if ($date_synchro) {
-			$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0" AND updated>=' . sql_quote($date_synchro), '', 'updated DESC', $limit);
-		} else {
-			$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0"', '', '', $limit);
-		}
+			if ($date_synchro) {
+				$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0" AND updated>=' . sql_quote($date_synchro), '', 'updated DESC', $limit);
+			} else {
+				$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0"', '', '', $limit);
+			}
 
-		foreach ($zitems as $zitem) {
-			fraap_biblio_ajouter_fbiblio($zitem, $config);
+			foreach ($zitems as $zitem) {
+				fraap_biblio_ajouter_fbiblio($zitem, $config);
+			}
 		}
 	}
 
