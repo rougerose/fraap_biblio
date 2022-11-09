@@ -11,8 +11,8 @@
 	<auteur lien='http://rouge-rose.net'>Christophe Le Drean</auteur>
 
 	<licence>GNU/GPL</licence>
-	<necessite nom="saisies" compatibilite="[4.5.1; 4.99.*]" />
-	<necessite nom="zotspip" compatibilite="[3.8.7; 3.99.*]" />
+	<necessite nom="saisies" compatibilite="[4.4.1;]" />
+	<necessite nom="zotspip" compatibilite="[4.0.1;]" />
 	<pipeline nom="autoriser" inclure="fraap_biblio_autorisations.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/fraap_biblio.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/fraap_biblio.php" />
