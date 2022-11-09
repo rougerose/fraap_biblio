@@ -89,9 +89,9 @@ function fraap_biblio_synchroniser_fbiblios($config) {
 			$limit = sql_quote($config['fbiblios']['debut']) . ',' . sql_quote($config['fbiblios']['offset']);
 
 			if ($date_synchro) {
-				$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0" AND updated>=' . sql_quote($date_synchro), '', 'updated DESC', $limit);
+				$zitems = sql_allfetsel('*', 'spip_zitems', 'id_parent="0" AND updated>=' . sql_quote($date_synchro), '', 'updated DESC', $limit);
 			} else {
-				$zitems = sql_allfetsel('id_zitem, titre, auteurs, resume, type_ref, annee', 'spip_zitems', 'id_parent="0"', '', '', $limit);
+				$zitems = sql_allfetsel('*', 'spip_zitems', 'id_parent="0"', '', '', $limit);
 			}
 
 			foreach ($zitems as $zitem) {
@@ -114,9 +114,17 @@ function fraap_biblio_synchroniser_fbiblios($config) {
 
 function fraap_biblio_ajouter_fbiblio($zitem = [], $config = []) {
 	$statut = null;
+	$annee = '';
 
 	$in = sql_in('statut', ['prepa', 'prop', 'publie']);
 	$fbiblio = sql_fetsel('*', 'spip_fbiblios', 'id_zitem=' . sql_quote($zitem['id_zitem']) . ' AND ' . $in);
+
+	// année de publication : si cette donnée est indisponible, on prend l'année d'ajout de la référence
+	if ($zitem['annee'] > 0) {
+		$annee = $zitem['annee'];
+	} else {
+		$annee = date('Y', strtotime($zitem['date_ajout']));
+	}
 
 	$set = [
 		'id_zitem' => $zitem['id_zitem'],
@@ -124,7 +132,7 @@ function fraap_biblio_ajouter_fbiblio($zitem = [], $config = []) {
 		'auteurs' => $zitem['auteurs'],
 		'resume' => $zitem['resume'],
 		'type_ref' => $zitem['type_ref'],
-		'annee' => $zitem['annee'],
+		'annee' => $annee,
 	];
 
 	if (!$fbiblio) {
