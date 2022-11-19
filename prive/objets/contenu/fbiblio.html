@@ -15,4 +15,19 @@
     <div class="label"><:fbiblio:champ_auteurs_label:/> : </div>
     <span dir="#LANG_DIR" class="#EDIT{auteurs} auteurs">(#AUTEURS)</span>
   </div>]
+
+  [<div class="champ contenu_type_ref[ (#TYPE_REF*|strlen|?{'',vide})]">
+    <div class="label"><:fbiblio:champ_type_ref_label:/> : </div>
+    <span dir="#LANG_DIR" class="#EDIT{type_ref} type_ref">(#TYPE_REF|zotspip_traduire_type)</span>
+  </div>]
+
+  [<div class="champ contenu_resume[ (#RESUME*|strlen|?{'',vide})]">
+    <div class="label"><:fbiblio:champ_resume_label:/> : </div>
+    <span dir="#LANG_DIR" class="#EDIT{resume} resume">(#RESUME)</span>
+  </div>]
+
+  [<div class="champ contenu_annee[ (#ANNEE*|strlen|?{'',vide})]">
+    <div class="label"><:fbiblio:champ_annee_label:/> : </div>
+    <span dir="#LANG_DIR" class="#EDIT{annee} annee">(#ANNEE)</span>
+  </div>]
 </BOUCLE_fbiblio>

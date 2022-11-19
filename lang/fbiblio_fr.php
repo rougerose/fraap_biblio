@@ -20,6 +20,9 @@ $GLOBALS[$GLOBALS['idx_lang']] = [
 	'champ_id_zitem_label' => 'identifiant de la référence',
 	'champ_titre_label' => 'Titre',
 	'confirmer_supprimer_fbiblio' => 'Confirmez-vous la suppression de cette référence bibliographique ?',
+	'champ_type_ref_label' => 'Type de référence',
+	'champ_resume_label' => 'Résumé',
+	'champ_annee_label' => 'Année de publication',
 
 	// I
 	'icone_creer_fbiblio' => 'Créer une référence bibliographique',

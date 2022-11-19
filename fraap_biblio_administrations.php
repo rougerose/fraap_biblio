@@ -94,4 +94,6 @@ function fraap_biblio_vider_tables($nom_meta_base_version) {
 
 	effacer_meta($nom_meta_base_version);
 	effacer_config('fraap_biblio');
+	effacer_config('fraap_biblio_derniere_synchro');
+	effacer_config('fraap_biblio_synchro');
 }

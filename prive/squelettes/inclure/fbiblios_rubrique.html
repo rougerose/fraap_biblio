@@ -1,7 +1,7 @@
 [(#REM)
   <!-- fbiblios liées à une rubrique -->
 ]
-<BOUCLE_fbiblios(FBIBLIOS){id_rubrique=#ENV{id_objet}}{0,1}> </BOUCLE_fbiblios>
+<BOUCLE_fbiblios(FBIBLIOS){id_rubrique=#ENV{id_objet}}{0,1}>
 <br class="nettoyeur">
 <br class="nettoyeur">
 <h2 class="titrem"><:fbiblio:titre_fbiblios_rubrique:></h2>
@@ -30,4 +30,4 @@
     #SET{titre, #GET{total_prepa}|singulier_ou_pluriel{fbiblio:info_1_fbiblio_prepa,fbiblio:info_nb_fbiblios_prepa}}
     <INCLURE{fond=prive/objets/liste/fbiblios, id_rubrique, statut=prepa, titre=#GET{titre}, env}/>
 </B_fbiblios_prepa>
-</B_fbiblios>
+</BOUCLE_fbiblios>
