@@ -2,7 +2,7 @@
 	prefix="fraap_biblio"
 	version="1.0.0"
 	etat="stable"
-	compatibilite="[4.0.4;4.1.*]"
+	compatibilite="[4.0.4;4.2.*]"
 	logo="prive/themes/spip/images/fraap_biblio-xx.svg"
 	documentation=""
 	schema="1.0.0"
