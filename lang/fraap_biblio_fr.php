@@ -6,8 +6,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-$GLOBALS[$GLOBALS['idx_lang']] = [
-
+return [
 	// F
 	'fraap_biblio_titre' => 'Fraap : bibliographie',
 
@@ -22,7 +21,6 @@ $GLOBALS[$GLOBALS['idx_lang']] = [
 	'cfg_option_forcer_label' => 'Options de la synchronisation',
 	'cfg_option_forcer_non' => 'Mettre à jour la Médiathèque',
 	'cfg_option_forcer_oui' => 'Effacer et mettre à jour la Médiathèque',
-
 
 	// T
 	'titre_page_configurer_fraap_biblio' => 'Configuration et synchronisation de la Médiathèque',

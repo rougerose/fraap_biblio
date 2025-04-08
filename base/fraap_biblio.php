@@ -14,7 +14,6 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-
 /**
  * Déclaration des alias de tables et filtres automatiques de champs
  *
@@ -31,7 +30,6 @@ function fraap_biblio_declarer_tables_interfaces($interfaces) {
 	return $interfaces;
 }
 
-
 /**
  * Déclaration des objets éditoriaux
  *
@@ -47,55 +45,52 @@ function fraap_biblio_declarer_tables_objets_sql($tables) {
 		'type' => 'fbiblio',
 		'principale' => 'oui',
 		'field' => [
-			'id_fbiblio'         => 'bigint(21) NOT NULL',
-			'id_rubrique'        => 'bigint(21) NOT NULL DEFAULT 0',
-			'id_secteur'         => 'bigint(21) NOT NULL DEFAULT 0',
-			'id_zitem'           => 'varchar(16) DEFAULT "" NOT NULL',
-			'titre'              => 'text NOT NULL DEFAULT ""',
-			'auteurs'            => 'text NOT NULL DEFAULT ""',
-			'resume'             => "mediumtext DEFAULT '' NOT NULL",
-			'type_ref'           => "varchar(255) DEFAULT '' NOT NULL",
-			'annee'              => 'smallint(6)',
-			'statut'             => 'varchar(20)  DEFAULT "0" NOT NULL',
-			'date'               => 'DATETIME DEFAULT "0000-00-00 00:00:00" NOT NULL',
-			'maj'                => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'
+			'id_fbiblio' => 'bigint(21) NOT NULL',
+			'id_rubrique' => 'bigint(21) NOT NULL DEFAULT 0',
+			'id_secteur' => 'bigint(21) NOT NULL DEFAULT 0',
+			'id_zitem' => 'varchar(16) DEFAULT "" NOT NULL',
+			'titre' => 'text NOT NULL DEFAULT ""',
+			'auteurs' => 'text NOT NULL DEFAULT ""',
+			'resume' => "mediumtext DEFAULT '' NOT NULL",
+			'type_ref' => "varchar(255) DEFAULT '' NOT NULL",
+			'annee' => 'smallint(6)',
+			'statut' => 'varchar(20)  DEFAULT "0" NOT NULL',
+			'date' => 'DATETIME DEFAULT "0000-00-00 00:00:00" NOT NULL',
+			'maj' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
 		],
 		'key' => [
-			'PRIMARY KEY'        => 'id_fbiblio',
-			'KEY id_rubrique'    => 'id_rubrique',
-			'KEY id_secteur'     => 'id_secteur',
-			'KEY statut'         => 'statut',
+			'PRIMARY KEY' => 'id_fbiblio',
+			'KEY id_rubrique' => 'id_rubrique',
+			'KEY id_secteur' => 'id_secteur',
+			'KEY statut' => 'statut',
 		],
 		'titre' => 'titre AS titre, "" AS lang',
-		 #'date' => '',
-		'champs_editables'  => ['id_rubrique', 'id_secteur'],
+		#'date' => '',
+		'champs_editables' => ['id_rubrique', 'id_secteur'],
 		'champs_versionnes' => ['id_rubrique', 'id_secteur'],
 		'rechercher_champs' => ['titre' => 8, 'auteurs' => 8, 'resume' => 8],
-		'tables_jointures'  => [],
+		'tables_jointures' => [],
 		'statut_textes_instituer' => [
-			'prepa'    => 'texte_statut_en_cours_redaction',
-			'prop'     => 'texte_statut_propose_evaluation',
-			'publie'   => 'texte_statut_publie',
-			'refuse'   => 'texte_statut_refuse',
+			'prepa' => 'texte_statut_en_cours_redaction',
+			'prop' => 'texte_statut_propose_evaluation',
+			'publie' => 'texte_statut_publie',
+			'refuse' => 'texte_statut_refuse',
 			'poubelle' => 'texte_statut_poubelle',
 		],
 		'statut' => [
 			[
-				'champ'     => 'statut',
-				'publie'    => 'publie',
-				'previsu'   => 'publie,prop,prepa',
+				'champ' => 'statut',
+				'publie' => 'publie',
+				'previsu' => 'publie,prop,prepa',
 				'post_date' => 'date',
-				'exception' => ['statut','tout']
-			]
+				'exception' => ['statut', 'tout'],
+			],
 		],
 		'texte_changer_statut' => 'fbiblio:texte_changer_statut_fbiblio',
-
-
 	];
 
 	return $tables;
 }
-
 
 /**
  * Déclaration des tables secondaires (liaisons)

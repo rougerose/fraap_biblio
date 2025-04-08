@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Fonctions du squelette associé
  *

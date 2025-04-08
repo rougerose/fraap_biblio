@@ -14,7 +14,6 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-
 /**
  * Fonction d'installation et de mise à jour du plugin Fraap : bibliographie.
  *
@@ -29,8 +28,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  *     Nom de la meta informant de la version du schéma de données du plugin installé dans SPIP
  * @param string $version_cible
  *     Version du schéma de données dans ce plugin (déclaré dans paquet.xml)
- * @return void
-**/
+ **/
 function fraap_biblio_upgrade($nom_meta_base_version, $version_cible) {
 	$maj = [];
 	# quelques exemples
@@ -54,13 +52,12 @@ function fraap_biblio_upgrade($nom_meta_base_version, $version_cible) {
 	include_spip('inc/config');
 	$maj['create'] = [
 		['maj_tables', ['spip_fbiblios']],
-		['ecrire_config', 'fraap_biblio', ['nb_max_synchro' => 50, 'mediatheque' => '', 'groupe' => '']]
+		['ecrire_config', 'fraap_biblio', ['nb_max_synchro' => 50, 'mediatheque' => '', 'groupe' => '']],
 	];
 
 	include_spip('base/upgrade');
 	maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }
-
 
 /**
  * Fonction de désinstallation du plugin Fraap : bibliographie.
@@ -72,8 +69,7 @@ function fraap_biblio_upgrade($nom_meta_base_version, $version_cible) {
  *
  * @param string $nom_meta_base_version
  *     Nom de la meta informant de la version du schéma de données du plugin installé dans SPIP
- * @return void
-**/
+ **/
 function fraap_biblio_vider_tables($nom_meta_base_version) {
 	# quelques exemples
 	# (que vous pouvez supprimer !)

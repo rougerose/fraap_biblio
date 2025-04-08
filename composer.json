@@ -1,19 +1,15 @@
 {
-  "name": "fraap/fraap_biblio",
-  "description": "Références bibliographiques",
-  "type": "spip-plugin",
-  "require": {
-    "php": ">=7.4"
-  },
-  "require-dev": {
-    "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-    "phpcompatibility/php-compatibility": "^10.x-dev",
-    "phpstan/phpstan": "^1.10",
-    "spip/coding-standards": "^1.3"
-  },
-  "config": {
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+    "repositories": {
+        "spip": {
+            "type": "composer",
+            "url": "https://get.spip.net/composer"
+        }
+    },
+    "require-dev": {
+        "spip-league/easy-coding-standard": "^1.1"
+    },
+    "scripts": {
+        "check-cs": "vendor/bin/ecs check --ansi",
+        "fix-cs": "vendor/bin/ecs check --fix --ansi"
     }
-  }
 }

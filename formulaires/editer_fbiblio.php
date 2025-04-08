@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Gestion du formulaire de d'édition de fbiblio
  *
@@ -39,9 +40,17 @@ include_spip('inc/editer');
  * @return string
  *     Hash du formulaire
  */
-function formulaires_editer_fbiblio_saisies_dist($id_fbiblio = 'new', $id_rubrique = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
-	$saisies = array(
-	);
+function formulaires_editer_fbiblio_saisies_dist(
+	$id_fbiblio = 'new',
+	$id_rubrique = 0,
+	$retour = '',
+	$associer_objet = '',
+	$lier_trad = 0,
+	$config_fonc = '',
+	$row = [],
+	$hidden = ''
+) {
+	$saisies = [];
 	return $saisies;
 }
 
@@ -68,8 +77,17 @@ function formulaires_editer_fbiblio_saisies_dist($id_fbiblio = 'new', $id_rubriq
  * @return string
  *     Hash du formulaire
  */
-function formulaires_editer_fbiblio_identifier_dist($id_fbiblio = 'new', $id_rubrique = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
-	return serialize(array(intval($id_fbiblio), $associer_objet));
+function formulaires_editer_fbiblio_identifier_dist(
+	$id_fbiblio = 'new',
+	$id_rubrique = 0,
+	$retour = '',
+	$associer_objet = '',
+	$lier_trad = 0,
+	$config_fonc = '',
+	$row = [],
+	$hidden = ''
+) {
+	return serialize([intval($id_fbiblio), $associer_objet]);
 }
 
 /**
@@ -99,8 +117,26 @@ function formulaires_editer_fbiblio_identifier_dist($id_fbiblio = 'new', $id_rub
  * @return array
  *     Environnement du formulaire
  */
-function formulaires_editer_fbiblio_charger_dist($id_fbiblio = 'new', $id_rubrique = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
-	$valeurs = formulaires_editer_objet_charger('fbiblio', $id_fbiblio, $id_rubrique, $lier_trad, $retour, $config_fonc, $row, $hidden);
+function formulaires_editer_fbiblio_charger_dist(
+	$id_fbiblio = 'new',
+	$id_rubrique = 0,
+	$retour = '',
+	$associer_objet = '',
+	$lier_trad = 0,
+	$config_fonc = '',
+	$row = [],
+	$hidden = ''
+) {
+	$valeurs = formulaires_editer_objet_charger(
+		'fbiblio',
+		$id_fbiblio,
+		$id_rubrique,
+		$lier_trad,
+		$retour,
+		$config_fonc,
+		$row,
+		$hidden
+	);
 
 	$valeurs['saisies'] = call_user_func_array('formulaires_editer_fbiblio_saisies_dist', func_get_args());
 	return $valeurs;
@@ -133,10 +169,18 @@ function formulaires_editer_fbiblio_charger_dist($id_fbiblio = 'new', $id_rubriq
  * @return array
  *     Tableau des erreurs
  */
-function formulaires_editer_fbiblio_verifier_dist($id_fbiblio = 'new', $id_rubrique = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
+function formulaires_editer_fbiblio_verifier_dist(
+	$id_fbiblio = 'new',
+	$id_rubrique = 0,
+	$retour = '',
+	$associer_objet = '',
+	$lier_trad = 0,
+	$config_fonc = '',
+	$row = [],
+	$hidden = ''
+) {
 
 	$erreurs = formulaires_editer_objet_verifier('fbiblio', $id_fbiblio);
-
 
 	// Normaliser la rubrique si le champ n'est pas en erreur :
 	// le picker ajax du sélecteur générique retourne un tableau de la forme array('rubrique|1')
@@ -178,8 +222,26 @@ function formulaires_editer_fbiblio_verifier_dist($id_fbiblio = 'new', $id_rubri
  * @return array
  *     Retours des traitements
  */
-function formulaires_editer_fbiblio_traiter_dist($id_fbiblio = 'new', $id_rubrique = 0, $retour = '', $associer_objet = '', $lier_trad = 0, $config_fonc = '', $row = array(), $hidden = '') {
-	$retours = formulaires_editer_objet_traiter('fbiblio', $id_fbiblio, $id_rubrique, $lier_trad, $retour, $config_fonc, $row, $hidden);
+function formulaires_editer_fbiblio_traiter_dist(
+	$id_fbiblio = 'new',
+	$id_rubrique = 0,
+	$retour = '',
+	$associer_objet = '',
+	$lier_trad = 0,
+	$config_fonc = '',
+	$row = [],
+	$hidden = ''
+) {
+	$retours = formulaires_editer_objet_traiter(
+		'fbiblio',
+		$id_fbiblio,
+		$id_rubrique,
+		$lier_trad,
+		$retour,
+		$config_fonc,
+		$row,
+		$hidden
+	);
 
 	// Un lien a prendre en compte ?
 	if ($associer_objet and $id_fbiblio = $retours['id_fbiblio']) {
@@ -187,9 +249,9 @@ function formulaires_editer_fbiblio_traiter_dist($id_fbiblio = 'new', $id_rubriq
 
 		if ($objet and $id_objet and autoriser('modifier', $objet, $id_objet)) {
 			include_spip('action/editer_liens');
-			
-			objet_associer(array('fbiblio' => $id_fbiblio), array($objet => $id_objet));
-			
+
+			objet_associer(['fbiblio' => $id_fbiblio], [$objet => $id_objet]);
+
 			if (isset($retours['redirect'])) {
 				$retours['redirect'] = parametre_url($retours['redirect'], 'id_lien_ajoute', $id_fbiblio, '&');
 			}

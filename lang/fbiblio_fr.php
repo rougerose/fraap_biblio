@@ -6,8 +6,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-
-$GLOBALS[$GLOBALS['idx_lang']] = [
+return [
 	// A
 	'ajouter_lien_fbiblio' => 'Ajouter cette référence bibliographique',
 
