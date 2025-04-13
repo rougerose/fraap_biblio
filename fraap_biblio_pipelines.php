@@ -14,13 +14,11 @@ if (!defined('_ECRIRE_INC_VERSION')) {
 	return;
 }
 
-
 /*
  * Un fichier de pipelines permet de regrouper
  * les fonctions de branchement de votre plugin
  * sur des pipelines existants.
  */
-
 
 /**
  * Ajouter les objets sur les vues des parents directs
@@ -28,7 +26,7 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  * @pipeline affiche_enfants
  * @param  array $flux Données du pipeline
  * @return array       Données du pipeline
-**/
+ **/
 function fraap_biblio_affiche_enfants($flux) {
 	if (
 		$e = trouver_objet_exec($flux['args']['exec'])
@@ -60,7 +58,6 @@ function fraap_biblio_affiche_enfants($flux) {
 	return $flux;
 }
 
-
 /**
  * Ajout de contenu sur certaines pages,
  * notamment des formulaires de liaisons entre objets
@@ -73,8 +70,6 @@ function fraap_biblio_affiche_milieu($flux) {
 	$texte = '';
 	$e = trouver_objet_exec($flux['args']['exec']);
 
-
-
 	// fbiblios sur les mots
 	if (
 		$e
@@ -84,7 +79,7 @@ function fraap_biblio_affiche_milieu($flux) {
 		$texte .= recuperer_fond('prive/objets/editer/liens', [
 			'table_source' => 'fbiblios',
 			'objet' => $e['type'],
-			'id_objet' => $flux['args'][$e['id_table_objet']]
+			'id_objet' => $flux['args'][$e['id_table_objet']],
 		]);
 	}
 
@@ -105,11 +100,14 @@ function fraap_biblio_affiche_milieu($flux) {
  * @pipeline boite_infos
  * @param  array $flux Données du pipeline
  * @return array       Données du pipeline
-**/
+ **/
 function fraap_biblio_boite_infos($flux) {
 	if (isset($flux['args']['type']) and isset($flux['args']['id']) and $id = intval($flux['args']['id'])) {
 		$texte = '';
-		if ($flux['args']['type'] == 'rubrique' and $nb = sql_countsel('spip_fbiblios', ["statut='publie'", 'id_rubrique=' . $id])) {
+		if ($flux['args']['type'] == 'rubrique' and $nb = sql_countsel(
+			'spip_fbiblios',
+			["statut='publie'", 'id_rubrique=' . $id]
+		)) {
 			$texte .= '<div>' . singulier_ou_pluriel($nb, 'fbiblio:info_1_fbiblio', 'fbiblio:info_nb_fbiblios') . "</div>\n";
 		}
 		if ($texte and $p = strpos($flux['data'], '<!--nb_elements-->')) {
@@ -119,27 +117,31 @@ function fraap_biblio_boite_infos($flux) {
 	return $flux;
 }
 
-
 /**
  * Compter les enfants d'un objet
  *
  * @pipeline objets_compte_enfants
  * @param  array $flux Données du pipeline
  * @return array       Données du pipeline
-**/
+ **/
 function fraap_biblio_objet_compte_enfants($flux) {
 	if ($flux['args']['objet'] == 'rubrique' and $id_rubrique = intval($flux['args']['id_objet'])) {
 		// juste les publiés ?
 		if (array_key_exists('statut', $flux['args']) and ($flux['args']['statut'] == 'publie')) {
-			$flux['data']['fbiblios'] = sql_countsel('spip_fbiblios', 'id_rubrique= ' . intval($id_rubrique) . " AND (statut = 'publie')");
+			$flux['data']['fbiblios'] = sql_countsel(
+				'spip_fbiblios',
+				'id_rubrique= ' . intval($id_rubrique) . " AND (statut = 'publie')"
+			);
 		} else {
-			$flux['data']['fbiblios'] = sql_countsel('spip_fbiblios', 'id_rubrique= ' . intval($id_rubrique) . " AND (statut <> 'poubelle')");
+			$flux['data']['fbiblios'] = sql_countsel(
+				'spip_fbiblios',
+				'id_rubrique= ' . intval($id_rubrique) . " AND (statut <> 'poubelle')"
+			);
 		}
 	}
 
 	return $flux;
 }
-
 
 /**
  * Optimiser la base de données
@@ -167,7 +169,7 @@ function fraap_biblio_optimiser_base_disparus($flux) {
  * @pipeline trig_propager_les_secteurs
  * @param  string $flux Données du pipeline
  * @return string       Données du pipeline
-**/
+ **/
 function fraap_biblio_trig_propager_les_secteurs($flux) {
 
 	// synchroniser spip_fbiblios

@@ -24,8 +24,8 @@ function formulaires_configurer_fraap_biblio_saisies() {
 				'nom' => 'mediatheque',
 				'label' => '<:fraap_biblio:cfg_label_rubrique_mediatheque:>',
 				'obligatoire' => 'oui',
-				'explication' => '<:fraap_biblio:cfg_explication_rubrique_mediatheque:>'
-			]
+				'explication' => '<:fraap_biblio:cfg_explication_rubrique_mediatheque:>',
+			],
 		],
 		[
 			'saisie' => 'selection',
@@ -34,8 +34,8 @@ function formulaires_configurer_fraap_biblio_saisies() {
 				'label' => '<:fraap_biblio:cfg_label_groupe_mediatheque:>',
 				'obligatoire' => 'oui',
 				'data' => $groupes_mediatheque,
-			]
-		]
+			],
+		],
 	];
 
 	return $saisies;
