@@ -245,7 +245,7 @@ function formulaires_editer_fbiblio_traiter_dist(
 
 	// Un lien a prendre en compte ?
 	if ($associer_objet and $id_fbiblio = $retours['id_fbiblio']) {
-		list($objet, $id_objet) = explode('|', $associer_objet);
+		[$objet, $id_objet] = explode('|', $associer_objet);
 
 		if ($objet and $id_objet and autoriser('modifier', $objet, $id_objet)) {
 			include_spip('action/editer_liens');

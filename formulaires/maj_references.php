@@ -14,7 +14,7 @@ function formulaires_maj_references_charger_dist() {
 
 	if (isset($config_synchro['fbiblios']['action'])) {
 		if ($config_synchro['fbiblios']['action'] == 'synchro' or $config_synchro['fbiblios']['action'] == 'install') {
-			$nb = isset($config_synchro['fbiblios']['solde']) ? $config_synchro['fbiblios']['solde'] : 0;
+			$nb = $config_synchro['fbiblios']['solde'] ?? 0;
 			$avancement = _T('fbiblio:synchro_message_maj_en_cours', ['nb' => $nb]);
 		}
 

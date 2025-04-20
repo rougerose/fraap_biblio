@@ -210,11 +210,11 @@ function fraap_biblio_configurer_synchronisation() {
 	$config_synchro = lire_config('fraap_biblio_synchro');
 	$derniere_synchro = intval(lire_config('fraap_biblio_derniere_synchro'));
 
-	$config_synchro = isset($config_synchro) ? $config_synchro : [];
+	$config_synchro ??= [];
 
 	// Identifier la rubrique Médiathèque
 	if (!isset($config_synchro['mediatheque'])) {
-		list($objet, $id_objet) = explode('|', $config_plugin['mediatheque'][0]);
+		[$objet, $id_objet] = explode('|', $config_plugin['mediatheque'][0]);
 
 		if ($id_objet == '' or $config_plugin['groupe'] == '') {
 			return false;
@@ -253,7 +253,7 @@ function fraap_biblio_configurer_synchronisation() {
 
 	// Date de la dernière synchro
 	if (!isset($derniere_synchro)) {
-		$now = strtotime('nom');
+		$now = strtotime('now');
 		$config_synchro['derniere_synchro'] = $now;
 		ecrire_config('fraap_biblio_derniere_synchro', strval($now));
 	} else {
@@ -294,7 +294,7 @@ function fraap_biblio_ajouter_mots($id_fbiblio = 0, $ztags = [], $repertoire_mot
 			$ztag_titre = fraap_biblio_normaliser_titre($ztag['tag']);
 
 			if (strpos($ztag_titre, 'mot=') !== false) {
-				list($type, $titre) = explode('=', $ztag_titre);
+				[$type, $titre] = explode('=', $ztag_titre);
 				++$res['index'];
 
 				$cle = array_search($titre, array_column($repertoire_mots, 'titre'));
