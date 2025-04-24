@@ -155,13 +155,3 @@ function autoriser_rubrique_creerfbibliodans_dist($faire, $type, $id, $qui, $opt
 function autoriser_associerfbiblios_dist($faire, $type, $id, $qui, $opt) {
 	return $qui['statut'] == '0minirezo' and !$qui['restreint'];
 }
-
-function autoriser_fraap_biblio_configurer_dist($faire, $type, $id, $qui, $opt) {
-	// type est un objet (la plupart du temps) ou une chose.
-	// autoriser('configurer', '_fraap_biblio') => $type = 'fraap_biblio'
-	// au choix :
-	//return autoriser('webmestre', $type, $id, $qui, $opt); // seulement les webmestres
-	return autoriser('configurer', '', $id, $qui, $opt); // seulement les administrateurs complets
-	//return $qui['statut'] == '0minirezo'; // seulement les administrateurs (même les restreints)
-	// ...
-}

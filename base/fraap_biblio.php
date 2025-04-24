@@ -56,6 +56,8 @@ function fraap_biblio_declarer_tables_objets_sql($tables) {
 			'annee' => 'smallint(6)',
 			'statut' => 'varchar(20)  DEFAULT "0" NOT NULL',
 			'date' => 'DATETIME DEFAULT "0000-00-00 00:00:00" NOT NULL',
+			'updated' => 'DATETIME DEFAULT "0000-00-00 00:00:00" NOT NULL',
+			'date_ajout' => 'DATETIME DEFAULT "0000-00-00 00:00:00" NOT NULL',
 			'maj' => 'timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
 		],
 		'key' => [

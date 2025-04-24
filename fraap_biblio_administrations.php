@@ -31,28 +31,16 @@ if (!defined('_ECRIRE_INC_VERSION')) {
  **/
 function fraap_biblio_upgrade($nom_meta_base_version, $version_cible) {
 	$maj = [];
-	# quelques exemples
-	# (que vous pouvez supprimer !)
-	#
-	# $maj['create'] = array(array('creer_base'));
-	#
-	# include_spip('inc/config')
-	# $maj['create'] = array(
-	#	array('maj_tables', array('spip_xx', 'spip_xx_liens')),
-	#	array('ecrire_config', 'fraap_biblio', array('exemple' => "Texte de l'exemple"))
-	#);
-	#
-	# $maj['1.1.0']  = array(array('sql_alter','TABLE spip_xx RENAME TO spip_yy'));
-	# $maj['1.2.0']  = array(array('sql_alter','TABLE spip_xx DROP COLUMN id_auteur'));
-	# $maj['1.3.0']  = array(
-	#	array('sql_alter','TABLE spip_xx CHANGE numero numero int(11) default 0 NOT NULL'),
-	#	array('sql_alter','TABLE spip_xx CHANGE texte petit_texte mediumtext NOT NULL default \'\''),
-	# );
-	# ...
 	include_spip('inc/config');
 	$maj['create'] = [
 		['maj_tables', ['spip_fbiblios']],
 		['ecrire_config', 'fraap_biblio', ['nb_max_synchro' => 50, 'mediatheque' => '', 'groupe' => '']],
+	];
+
+	$maj['1.0.1'] = [
+		['sql_alter', 'TABLE spip_fbiblios ADD updated DATETIME DEFAULT "0000-00-00 00:00:00" NOT NULL'],
+		['sql_alter', 'TABLE spip_fbiblios ADD date_ajout DATETIME DEFAULT "0000-00-00 00:00:00" NOT NULL'],
+		['fraap_biblio_peupler_dates'],
 	];
 
 	include_spip('base/upgrade');
@@ -71,13 +59,8 @@ function fraap_biblio_upgrade($nom_meta_base_version, $version_cible) {
  *     Nom de la meta informant de la version du schéma de données du plugin installé dans SPIP
  **/
 function fraap_biblio_vider_tables($nom_meta_base_version) {
-	# quelques exemples
-	# (que vous pouvez supprimer !)
-	# sql_drop_table('spip_xx');
-	# sql_drop_table('spip_xx_liens');
-
 	sql_drop_table('spip_fbiblios');
-	sql_drop_table('spip_fbiblios_liens');
+	// sql_drop_table('spip_fbiblios_liens');
 
 	# Nettoyer les liens courants (le génie optimiser_base_disparus se chargera de nettoyer toutes les tables de liens)
 	sql_delete('spip_documents_liens', sql_in('objet', ['fbiblio']));
@@ -92,4 +75,33 @@ function fraap_biblio_vider_tables($nom_meta_base_version) {
 	effacer_config('fraap_biblio');
 	effacer_config('fraap_biblio_derniere_synchro');
 	effacer_config('fraap_biblio_synchro');
+}
+
+function fraap_biblio_peupler_dates() {
+	$zitems = sql_allfetsel('id_zitem, updated, date_ajout', 'spip_zitems', 'id_parent="0"');
+
+	if (count($zitems) > 0) {
+		foreach ($zitems as $zitem) {
+			// Convertir les dates ISO -> date msyql
+			$updated = date_format(date_timestamp_set(new DateTime(), strtotime($zitem['updated'])), 'Y-m-d H:i:s');
+			$date_ajout = date_format(date_timestamp_set(new DateTime(), strtotime($zitem['date_ajout'])), 'Y-m-d H:i:s');
+
+			$data = [
+				'updated' => $updated,
+				'date_ajout' => $date_ajout,
+			];
+
+			// S'il y a eu des ratés dans la synchro, les données peuvent être multiples.
+			$fbiblios = sql_allfetsel('id_fbiblio', 'spip_fbiblios', 'id_zitem=' . sql_quote($zitem['id_zitem']));
+
+			$liste_fbiblios = [];
+
+			foreach ($fbiblios as $fbiblio) {
+				$liste_fbiblios[] = $fbiblio['id_fbiblio'];
+			}
+
+			sql_updateq('spip_fbiblios', $data, sql_in('id_fbiblio', $liste_fbiblios));
+
+		}
+	}
 }
