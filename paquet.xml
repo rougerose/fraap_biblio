@@ -1,6 +1,6 @@
 <paquet
 	prefix="fraap_biblio"
-	version="1.0.2"
+	version="1.0.3"
 	etat="stable"
 	compatibilite="[4.0.4;4.4.*]"
 	logo="prive/themes/spip/images/fraap_biblio-xx.svg"
