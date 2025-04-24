@@ -158,7 +158,7 @@ function fraap_biblio_optimiser_base_disparus($flux) {
 	include_spip('action/editer_liens');
 	$flux['data'] += objet_optimiser_liens(['fbiblio' => '*'], '*');
 
-	sql_delete('spip_fbiblios', "statut='poubelle' AND maj < " . $flux['args']['date']);
+	sql_delete('spip_fbiblios', "statut='poubelle' AND maj < " . sql_quote($flux['args']['date']));
 
 	return $flux;
 }

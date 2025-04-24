@@ -4,9 +4,126 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "185653d6dc87e1520777b1447384ad5a",
+    "content-hash": "e065cc1e0ef91cb54dd155bffd0cadf4",
     "packages": [],
     "packages-dev": [
+        {
+            "name": "phpstan/phpstan",
+            "version": "2.1.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "96dde49e967c0c22812bcfa7bda4ff82c09f3b0c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/96dde49e967c0c22812bcfa7bda4ff82c09f3b0c",
+                "reference": "96dde49e967c0c22812bcfa7bda4ff82c09f3b0c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0"
+            },
+            "conflict": {
+                "phpstan/phpstan-shim": "*"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "keywords": [
+                "dev",
+                "static analysis"
+            ],
+            "support": {
+                "docs": "https://phpstan.org/user-guide/getting-started",
+                "forum": "https://github.com/phpstan/phpstan/discussions",
+                "issues": "https://github.com/phpstan/phpstan/issues",
+                "security": "https://github.com/phpstan/phpstan/security/policy",
+                "source": "https://github.com/phpstan/phpstan-src"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/ondrejmirtes",
+                    "type": "github"
+                },
+                {
+                    "url": "https://github.com/phpstan",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-04-16T13:19:18+00:00"
+        },
+        {
+            "name": "rector/rector",
+            "version": "2.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/rectorphp/rector.git",
+                "reference": "059b827cc648929711606e9824337e41e2f9ed92"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/rectorphp/rector/zipball/059b827cc648929711606e9824337e41e2f9ed92",
+                "reference": "059b827cc648929711606e9824337e41e2f9ed92",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0",
+                "phpstan/phpstan": "^2.1.9"
+            },
+            "conflict": {
+                "rector/rector-doctrine": "*",
+                "rector/rector-downgrade-php": "*",
+                "rector/rector-phpunit": "*",
+                "rector/rector-symfony": "*"
+            },
+            "suggest": {
+                "ext-dom": "To manipulate phpunit.xml via the custom-rule command"
+            },
+            "bin": [
+                "bin/rector"
+            ],
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Instant Upgrade and Automated Refactoring of any PHP code",
+            "keywords": [
+                "automation",
+                "dev",
+                "migration",
+                "refactoring"
+            ],
+            "support": {
+                "issues": "https://github.com/rectorphp/rector/issues",
+                "source": "https://github.com/rectorphp/rector/tree/2.0.11"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/tomasvotruba",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-03-28T10:25:17+00:00"
+        },
         {
             "name": "spip-league/easy-coding-standard",
             "version": "1.1.1",
@@ -54,6 +171,81 @@
                 "issues": "https://git.spip.net/spip-league/easy-coding-standard/-/issues"
             },
             "time": "2024-12-21T10:36:42+01:00"
+        },
+        {
+            "name": "spip-league/rector",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://git.spip.net/spip-league/rector.git",
+                "reference": "4f8dcb20153e1c1e288ca1e7f6960d60ea449b8b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://git.spip.net/api/v4/projects/spip-league%2Frector/repository/archive.zip?sha=4f8dcb20153e1c1e288ca1e7f6960d60ea449b8b",
+                "reference": "4f8dcb20153e1c1e288ca1e7f6960d60ea449b8b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^11.4",
+                "rector/rector": "^2.0",
+                "symfony/var-dumper": "^7.2",
+                "symplify/easy-coding-standard": "^12.3"
+            },
+            "default-branch": true,
+            "type": "rector-extension",
+            "autoload": {
+                "psr-4": {
+                    "SpipLeague\\Component\\Rector\\": [
+                        "src",
+                        "rules"
+                    ]
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "SpipLeague\\Component\\Rector\\Tests\\": [
+                        "tests",
+                        "rules-tests"
+                    ]
+                }
+            },
+            "scripts": {
+                "analyse": [
+                    "vendor/bin/phpstan --memory-limit=-1"
+                ],
+                "check-cs": [
+                    "vendor/bin/ecs check --ansi"
+                ],
+                "fix-cs": [
+                    "vendor/bin/ecs check --fix --ansi"
+                ],
+                "rector": [
+                    "vendor/bin/rector process --ansi"
+                ],
+                "rector-dry-run": [
+                    "vendor/bin/rector process --dry-run --ansi"
+                ],
+                "test": [
+                    "phpunit --colors --no-coverage"
+                ],
+                "test-coverage": [
+                    "@php -d xdebug.mode=coverage vendor/bin/phpunit --colors"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Rector upgrades rules for Spip",
+            "support": {
+                "source": "https://git.spip.net/spip-league/rector/-/tree/main",
+                "issues": "https://git.spip.net/spip-league/rector/-/issues"
+            },
+            "time": "2025-03-06T15:21:24+01:00"
         },
         {
             "name": "symplify/easy-coding-standard",
@@ -119,7 +311,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": {
+        "spip-league/rector": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {},

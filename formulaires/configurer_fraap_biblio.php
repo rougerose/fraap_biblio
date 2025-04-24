@@ -36,6 +36,19 @@ function formulaires_configurer_fraap_biblio_saisies() {
 				'data' => $groupes_mediatheque,
 			],
 		],
+		[
+			'saisie' => 'radio',
+			'options' => [
+				'nom' => 'synchro_automatique',
+				'label' => 'Synchro auto',
+				'obligatoire' => 'oui',
+				'defaut' => 'non',
+				'data' => [
+					'oui' => 'oui',
+					'non' => 'non',
+				],
+			],
+		],
 	];
 
 	return $saisies;

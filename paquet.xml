@@ -1,29 +1,28 @@
 <paquet
 	prefix="fraap_biblio"
-	version="1.0.2"
+	version="1.0.3"
 	etat="stable"
-	compatibilite="[4.0.4;4.2.*]"
+	compatibilite="[4.0.4;4.4.*]"
 	logo="prive/themes/spip/images/fraap_biblio-xx.svg"
 	documentation=""
-	schema="1.0.0"
+	schema="1.0.1"
 >
 	<nom>Fraap : bibliographie</nom>
 	<auteur lien='http://rouge-rose.net'>Christophe Le Drean</auteur>
 
 	<licence>GNU/GPL</licence>
-	<necessite nom="saisies" compatibilite="[4.4.1;]" />
-	<necessite nom="zotspip" compatibilite="[4.0.1;]" />
+	<necessite nom="saisies" />
+	<necessite nom="zotspip" compatibilite="[4.0.1;4.1.1]" />
 	<pipeline nom="autoriser" inclure="fraap_biblio_autorisations.php" />
 	<pipeline nom="declarer_tables_objets_sql" inclure="base/fraap_biblio.php" />
 	<pipeline nom="declarer_tables_interfaces" inclure="base/fraap_biblio.php" />
-	<!-- <pipeline nom="declarer_tables_auxiliaires" inclure="base/fraap_biblio.php" /> -->
 	<pipeline nom="affiche_enfants" inclure="fraap_biblio_pipelines.php" />
 	<pipeline nom="affiche_milieu" inclure="fraap_biblio_pipelines.php" />
 	<pipeline nom="boite_infos" inclure="fraap_biblio_pipelines.php" />
 	<pipeline nom="objet_compte_enfants" inclure="fraap_biblio_pipelines.php" />
 	<pipeline nom="optimiser_base_disparus" inclure="fraap_biblio_pipelines.php" />
 	<pipeline nom="trig_propager_les_secteurs" inclure="fraap_biblio_pipelines.php" />
-  <!-- <genie nom="synchroniser" periode="14400"/> -->
+  <genie nom="synchroniser" periode="120"/>
 	<menu nom="fbiblios" titre="fbiblio:titre_fbiblios" parent="menu_edition" icone="images/fbiblio-16.png" action="fbiblios" />
   <menu nom="config_fbiblios" titre="fraap_biblio:fraap_biblio_titre" parent="bando_configuration" icone="images/fbiblio-16.png" action="configurer_fraap_biblio" />
 </paquet>

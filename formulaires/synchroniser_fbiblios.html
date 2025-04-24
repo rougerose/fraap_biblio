@@ -1,0 +1,35 @@
+<div class='formulaire_spip formulaire_editer formulaire_#FORM'>
+  [(#ENV{sync}|oui)
+    <p class="notice" style="margin:10px;">
+      <:zotspip:sync_en_cours:>
+      [<br />
+      <span style="font-size:90%;">((#ENV{avancement}))</span>]
+    </p>
+  ]
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV**{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	[(#ENV{editable})
+    <form method="post" action="#ENV{action}">
+      <div>
+        #ACTION_FORMULAIRE
+        [<p class="explication">(#ENV{_explication})</p>]
+        [<p class="attention">(#ENV{_attention})</p>]
+        [(#REM) ajouter les saisies supplementaires : extra et autre, a cet endroit ]
+        <!--extra-->
+        <div class="groupe_btns">
+          <p class="boutons">
+            <span class="image_loading">&nbsp;</span>
+            <input type="submit" class="submit" value="<:fbiblio:bouton_synchroniser|attribut_html:>"/>
+          </p>
+        </div>
+      </div>
+    </form>
+	][(#ENV{sync}|oui)
+    <script>
+      jQuery(document).ready(function () {
+        jQuery('.formulaire_#FORM form').delay(3000).submit();
+      });
+    </script>
+  ]
+</div>
