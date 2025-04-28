@@ -10,6 +10,13 @@ include_spip('action/editer_liens');
 include_spip('inc/autoriser');
 include_spip('inc/config');
 
+/**
+ * Fonction principal de synchronisation des références fbiblios depuis celles issues de Zotero/Zotspip.
+ *
+ * @return array Résultats de synchronisation
+ * 	- `resultat` :	0, 1 ou -1. 0 pour synchronisation en erreur, 1 synchronisation complète, -1 synchronisation en cours.
+ * 	- `message`  :  message d'erreur ou de confirmation pour la formulaire de synchronisation.
+ */
 function fraap_biblio_peuplement_synchroniser() {
 	// Récupérer la synchro ou l'établir s'il elle n'existe pas encore.
 	$config_synchro = fraap_biblio_peuplement_configurer();
@@ -94,6 +101,8 @@ function fraap_biblio_peuplement_synchroniser() {
 }
 
 /**
+ * Initialise les données nécessaires à la synchronisation
+ *
  * @return array Tableau des données de configuration de la synchronisation
  * 	- `mediatheque`		: id_objet et objet de la rubrique Médiathèque
  *  - `groupe`			: identifiant du groupe de mots-clés de la Médiathèque
@@ -152,7 +161,13 @@ function fraap_biblio_peuplement_configurer() {
 
 }
 
-function fraap_biblio_peuplement_ajouter_fbiblios($config_synchro) {
+/**
+ * Enregistrer un lot de références fbiblios.
+ *
+ * @param array $config_synchro
+ * @return int
+ */
+function fraap_biblio_peuplement_ajouter_fbiblios($config_synchro = []) {
 	// Premier chargement (install) ou Mise à jour des données (synchro)
 	if (preg_match('/install|synchro/', $config_synchro['synchro']['etape'])) {
 		if ($config_synchro['synchro']['debut'] == 0) {
@@ -226,6 +241,9 @@ function fraap_biblio_peuplement_ajouter_fbiblios($config_synchro) {
 	}
 }
 
+/**
+ * Modifier les enregistreemnt d'une référence fbiblio.
+ */
 function fraap_biblio_peuplement_modifier_fbiblio(array $zitem = [], array $config_synchro = []) {
 	$mediatheque = intval($config_synchro['mediatheque']['id_objet']);
 	$statut_in = sql_in('statut', ['prepa', 'prop', 'publie']);
@@ -307,6 +325,12 @@ function fraap_biblio_peuplement_modifier_fbiblio(array $zitem = [], array $conf
 	}
 }
 
+/**
+ * Supprimer les références fbiblio qui n'existent plus dans la base Zotero/Zotspip.
+ *
+ * @param array $config_synchro
+ * @return int
+ */
 function fraap_biblio_peuplement_supprimer_fbiblios_disparus($config_synchro) {
 	$zitems = sql_allfetsel('id_zitem', 'spip_zitems', 'id_parent="0"');
 	$in = sql_in('statut', ['prepa', 'prop', 'publie']);
@@ -334,6 +358,14 @@ function fraap_biblio_peuplement_supprimer_fbiblios_disparus($config_synchro) {
 	return 1;
 }
 
+/**
+ * Lier à une référence fbiblio les mots-clés qui sont associés à son équivalent dans Zotero/Zotspip.
+ *
+ * @param int $id_fbiblio identifiant de la référence fbiblio
+ * @param array $ztags tableau des mots-clés à ajouter à la référence
+ * @param array $repertoire_mots tableau des mots-clés déjà enregistrés
+ * @return bool
+ */
 function fraap_biblio_peuplement_ajouter_mots($id_fbiblio = 0, $ztags = [], $repertoire_mots = []) {
 	$res = ['index' => 0, 'mots' => 0];
 
@@ -358,14 +390,20 @@ function fraap_biblio_peuplement_ajouter_mots($id_fbiblio = 0, $ztags = [], $rep
 		}
 	}
 
-	// Vérifier que le total attendu est non nul et qu'au moins 1 mot-clé de type catégories a été ajouté et que le total attendu est égal au nombre de mots ajoutés.
+	// Vérifier que le total attendu est non nul
+	// et qu'au moins 1 mot-clé de type catégories a été ajouté
+	// et que le total attendu est égal au nombre de mots ajoutés.
 	if ($res['index'] > 0 and $res['mots'] > 0 and $res['index'] == $res['mots']) {
 		return true;
 	}
 	return false;
-
 }
 
+/**
+ * Supprimer les liaisons entre une référence fbiblio et ses mots-clés.
+ *
+ * @param int $id_fbiblio identifiant de la référence fbiblio
+ */
 function fraap_biblio_peuplement_dissocier_mots($id_fbiblio) {
 	// dissocier les mots-clés actuels
 	$fbiblio_mots = sql_allfetsel(
@@ -383,6 +421,13 @@ function fraap_biblio_peuplement_dissocier_mots($id_fbiblio) {
 	}
 }
 
+/**
+ * Constituer un répertoire des mots-clés enregistrés sur le site
+ * et qui pourront être associés à une référence.
+ *
+ * @param int $id_groupe Identifiant du groupe de mots-clés
+ * @return array
+ */
 function fraap_biblio_peuplement_repertorier_mots($id_groupe = 0) {
 	$repertoire = [];
 	$mots = sql_allfetsel('id_mot, titre', 'spip_mots', 'id_groupe_racine=' . intval($id_groupe));
@@ -400,6 +445,13 @@ function fraap_biblio_peuplement_repertorier_mots($id_groupe = 0) {
 	return $repertoire;
 }
 
+/**
+ * Supprimer accents, espaces, majuscules dans un titre, afin de faciliter la reconnaissance
+ * entre un titre de mot-clé saisi dans la base Zotero et le titre d'un mot-clé
+ * enregistré sur le site.
+ *
+ * @param string $titre
+ */
 function fraap_biblio_peuplement_normaliser_titre($titre) {
 	return trim(fraap_biblio_peuplement_supprimer_accent(mb_strtolower($titre)));
 }
