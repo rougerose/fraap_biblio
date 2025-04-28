@@ -39,8 +39,6 @@ function formulaires_synchroniser_fbiblios_verifier() {
 	$erreurs = [];
 	$config = lire_config('fraap_biblio');
 
-	// TODO : vérifier si une synchro est en cours ?
-
 	if ($config['mediatheque'] == '' or $config['groupe'] == '') {
 		$erreurs['message_erreur'] = 'Veuillez configurer la Médiathèque';
 	}

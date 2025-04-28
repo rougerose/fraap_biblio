@@ -1,6 +1,6 @@
 <paquet
 	prefix="fraap_biblio"
-	version="1.0.3"
+	version="1.0.4"
 	etat="stable"
 	compatibilite="[4.0.4;4.4.*]"
 	logo="prive/themes/spip/images/fraap_biblio-xx.svg"
@@ -22,7 +22,7 @@
 	<pipeline nom="objet_compte_enfants" inclure="fraap_biblio_pipelines.php" />
 	<pipeline nom="optimiser_base_disparus" inclure="fraap_biblio_pipelines.php" />
 	<pipeline nom="trig_propager_les_secteurs" inclure="fraap_biblio_pipelines.php" />
-  <genie nom="synchroniser" periode="120"/>
+  <genie nom="synchroniser" periode="86400"/>
 	<menu nom="fbiblios" titre="fbiblio:titre_fbiblios" parent="menu_edition" icone="images/fbiblio-16.png" action="fbiblios" />
   <menu nom="config_fbiblios" titre="fraap_biblio:fraap_biblio_titre" parent="bando_configuration" icone="images/fbiblio-16.png" action="configurer_fraap_biblio" />
 </paquet>
